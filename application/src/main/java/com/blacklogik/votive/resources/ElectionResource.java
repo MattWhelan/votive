@@ -3,9 +3,7 @@ package com.blacklogik.votive.resources;
 import com.blacklogik.votive.api.Election;
 import com.blacklogik.votive.services.ElectionService;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import java.util.UUID;
 
 @Path("/elections")
@@ -23,7 +21,16 @@ public class ElectionResource {
 
     @GET
     @Path("/{id}")
-    public Election get(UUID electionId) {
+    public Election get(@PathParam("id") UUID electionId) {
         return electionService.get(electionId);
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Election update(@PathParam("id") UUID electionId, Election election) {
+        if(!election.getId().equals(electionId)) {
+            throw new BadRequestException("ID mismatch");
+        }
+        return electionService.update(election);
     }
 }

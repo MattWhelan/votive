@@ -1,14 +1,22 @@
 package com.blacklogik.votive.services;
 
 import com.blacklogik.votive.api.Election;
+import com.blacklogik.votive.dao.ElectionDao;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public class ElectionService {
+    private ElectionDao electionDao;
+
+    public ElectionService(ElectionDao electionDao) {
+        this.electionDao = electionDao;
+    }
+
     public Election create(Election election) {
         ZonedDateTime now = ZonedDateTime.now();
-        Election ret = new Election(UUID.randomUUID(),
+        Election toCreate = new Election(UUID.randomUUID(),
+                null,
                 now,
                 now,
                 Election.Style.RATING,
@@ -16,11 +24,16 @@ public class ElectionService {
                 election.getDescription(),
                 Election.State.NOMINATING,
                 election.getIssues());
-        //TODO: save ret
-        return ret;
+
+        return electionDao.create(toCreate);
+    }
+
+    public Election update(Election election) {
+        election.setLastModified(ZonedDateTime.now());
+        return electionDao.update(election);
     }
 
     public Election get(UUID electionId) {
-        return null;
+        return electionDao.get(electionId);
     }
 }

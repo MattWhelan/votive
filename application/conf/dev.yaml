@@ -1,3 +1,7 @@
 server:
   rootPath: /api/
 
+
+elastic:
+  clusterName: elasticsearch_matt
+  seedNodes: [127.0.0.1]

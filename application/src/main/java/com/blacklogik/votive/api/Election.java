@@ -1,6 +1,7 @@
 package com.blacklogik.votive.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.ZonedDateTime;
@@ -8,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Election {
     private UUID id;
+    private Long version;
     private ZonedDateTime created;
     private ZonedDateTime lastModified;
     private Style style;
@@ -20,6 +23,7 @@ public class Election {
 
     @JsonCreator
     public Election(@JsonProperty("id") UUID id,
+                    @JsonProperty("version") Long version,
                     @JsonProperty("created") ZonedDateTime created,
                     @JsonProperty("lastModified") ZonedDateTime lastModified,
                     @JsonProperty("style") Style style,
@@ -28,6 +32,7 @@ public class Election {
                     @JsonProperty("state") State state,
                     @JsonProperty("issues") List<Issue> issues) {
         this.id = id;
+        this.version = version;
         this.created = created;
         this.lastModified = lastModified;
         this.style = style;
@@ -39,6 +44,14 @@ public class Election {
 
     public UUID getId() {
         return id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public ZonedDateTime getCreated() {
